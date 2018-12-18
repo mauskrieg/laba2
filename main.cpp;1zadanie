@@ -1,0 +1,66 @@
+#include <iostream>
+#include <locale.h>
+#include <windows.h>
+
+#include "PRICE.cpp"
+
+using namespace std;
+
+const int N=8;
+int main()
+{
+    setlocale(LC_ALL, "rus");
+    PRICE arr[N];
+    system("cls");
+    for(int i=0; i<N; i++)
+        cin>>arr[i];
+    PRICE tmp;
+    for(int i=0; i<N-1; i++)
+    {
+        for(int j=0; j<N-i-1; j++)
+        {
+            if(bsort(arr[j], arr[j+1])==1)
+            {
+                tmp = arr[j];
+                arr[j] = arr[j+1];
+                arr[j+1] = tmp;
+            }
+        }
+    }
+    while(1)
+    {
+        system("cls");
+        cout<<"|1| Вывод инофрмации о товарах\n|2| Вывод товаров по названию\n|0| Выход\n\n";
+        int choise;
+        cin>>choise;
+        switch(choise)
+        {
+        case 1:
+            for(int i=0; i<N; i++)
+                cout<<arr[i];
+            break;
+        case 2:
+            {
+                char tovar[30];
+                cout<<"Введите название Товара: ";
+                cin>>tovar;
+                bool flag=0;
+                for(int i=0; i<N; i++)
+                {
+                    if(arr[i].ret(tovar))
+                    {
+                        cout<<arr[i];
+                        flag=1;
+                    }
+                }
+                if(!flag)
+                    cout<<"\nТоваров, с таким названием, нет\n\n";
+                break;
+            }
+        default: cout<<"Ошибка при вводе!\n\n"; break;
+        case 0:   exit(1);
+        }
+        system("pause");
+    }
+    return 0;
+}
