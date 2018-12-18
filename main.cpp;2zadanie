@@ -1,0 +1,74 @@
+#include <iostream>
+#include <cstdlib>
+#include <cstring>
+#include <fstream>
+
+using namespace std;
+
+int main()
+{
+    char bufer[1024];
+    int len=0;
+    try
+    {
+        ifstream file("read.txt");
+        if (!file)
+        {
+            throw 1;
+        }
+        else
+        {
+            while(!file.eof())
+            {
+                file.get(bufer[len]);
+                len++;
+            }
+            file.close();
+        }
+    }
+    catch(int i)
+ {
+       	 cout<<"File \"read.txt\" was not found!\n";
+      	  return 1;
+    	}
+
+	int end_of_sentence=0;
+	int i=0;
+	while(i<len)
+	{
+		if(bufer[i]=='.' || bufer[i]=='?' || bufer[i]=='!')
+		end_of_sentence++;
+		i++;
+	}
+	char *mas_ptr[end_of_sentence];
+	i=0;
+	int q=0;
+	while(q<end_of_sentence)
+	{
+		mas_ptr[q]=new char[100];
+		int j=0;
+		do
+		{
+			mas_ptr[q][j]=bufer[i];
+			j++;
+			i++;
+		}while(bufer[i-1]!='.' && bufer[i-1]!='?' && bufer[i-1]!='!');
+		mas_ptr[q][j]='\0';
+		i++;
+		q++;
+	}
+	for(int i=0; i<len; i++)            ///Вывод исходных предложений из файла
+        cout<<bufer[i];
+    cout<<endl;
+	for(int i=end_of_sentence-1; i>=0; i--)
+	{
+	    int j=0;
+		while(mas_ptr[i][j]!='\0')
+		{
+			cout<<mas_ptr[i][j];            ///Вывод предложений в обратном порядке
+			j++;
+		}
+		cout<<' ';
+	}
+	return 0;
+}
